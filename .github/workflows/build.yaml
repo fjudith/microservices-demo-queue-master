@@ -39,6 +39,11 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: fjudith/microservices-demo-queue-master/queue-master
+          tag_with_ref: true
           context: ./docker/queue-master/
           file: ./docker/queue-master/Dockerfile
           platforms: linux/amd64

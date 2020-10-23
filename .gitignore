@@ -114,3 +114,11 @@ weave-ecs-demo-key.pem
 
 # Ignore Vagrant cache files
 *.vagrant/
+
+# Ignore artifact
+docker/*.jar
+
+# Ignore vscode project files
+.project
+.classpath
+.settings

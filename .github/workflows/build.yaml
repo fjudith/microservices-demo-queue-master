@@ -1,4 +1,4 @@
-name: Java CI
+name: Spring Boot CI
 
 on: [push]
 
@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
       - name: Checkout code base
         uses: actions/checkout@v2
 

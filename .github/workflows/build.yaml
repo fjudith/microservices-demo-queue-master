@@ -7,22 +7,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
+      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - name: Checkout code base
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11.0
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11.0
+          java-package: jdk
+          architecture: x64
+
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
       - name: Prepare Artifact directory
-        run: mkdir staging && cp target/*.jar staging
+        run: |
+          mkdir staging && \
+          cp target/*.jar docker/queue-master/ && \
+          cp target/*.jar staging && \
+
       - uses: actions/upload-artifact@v2
         with:
           name: Package
           path: staging
+    
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./docker/queue-master/
+          file: ./docker/queue-master/Dockerfile
+          push: true
